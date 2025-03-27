@@ -56,7 +56,7 @@ def create_keylistener(transcriber, env_var="UTTERTYPE_RECORD_HOTKEYS"):
             on_deactivate=transcriber.stop_recording,
         )
 
-    key_code = key_code if key_code else "<ctrl>+<alt>+v"
+    key_code = "`"
 
     return HoldHotKey(
           HoldHotKey.parse(key_code),

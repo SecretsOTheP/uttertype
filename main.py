@@ -12,16 +12,12 @@ async def main():
 
     transcriber = WhisperAPITranscriber.create()
     hotkey = create_keylistener(transcriber)
-
-    keyboard.Listener(on_press=hotkey.press, on_release=hotkey.release).start()
-    console_table = ConsoleTable()
-    with console_table:
-        async for transcription, audio_duration_ms in transcriber.get_transcriptions():
-            manual_type(transcription.strip())
-            console_table.insert(
-                transcription,
-                round(0.0001 * audio_duration_ms / 1000, 6),
-            )
+    def for_canonical(f):
+        return lambda k: f(l.canonical(k))
+    l = keyboard.Listener(on_press=for_canonical(hotkey.press), on_release=for_canonical(hotkey.release))
+    l.start()
+    async for transcription, audio_duration_ms in transcriber.get_transcriptions():
+        manual_type(transcription.strip())
 
 
 if __name__ == "__main__":

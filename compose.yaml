@@ -1,0 +1,19 @@
+# TODO: https://docs.astral.sh/uv/guides/integration/docker/#configuring-watch-with-docker-compose
+services:
+  speaches:
+    container_name: speaches
+    build:
+      dockerfile: Dockerfile
+      context: .
+      platforms:
+        - linux/amd64
+        - linux/arm64
+    restart: unless-stopped
+    ports:
+      - 8000:8000
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "http://0.0.0.0:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 5s
